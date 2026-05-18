@@ -3,6 +3,8 @@ import { Component } from "react";
 import { loadPosts } from "../../util/load-posts";
 import { Posts } from "../../components/Posts";
 import { Button } from "../../components/Button";
+import { TextInput } from "../../components/TextInput";
+
 class Home extends Component {
   state = {
     posts: [],
@@ -37,25 +39,50 @@ class Home extends Component {
     })
   };
 
-  handleChenge = (e) =>{
-    const {value} = e.target
+  handleChenge = (e) => {
+    const { value } = e.target
     this.setState({
       searchValue: value
     })
   }
 
   render() {
-    const { posts,page, postsPerPage,allPosts,searchValue } = this.state;
+    const { posts, page, postsPerPage, allPosts, searchValue } = this.state;
     const noMorePosts = page + postsPerPage >= allPosts.length
+
+    const filteredPosts = !!searchValue
+      ? allPosts.filter((post) => {
+        return post.title
+          .toLowerCase()
+          .includes(searchValue.toLowerCase());
+      })
+      : posts;
 
     return (
       <section className="container">
-        <input  onChange={this.value} value={searchValue} type="search"/> <br /> <br /> <br />
-        
-        <Posts posts={posts} />
+        <div className="search-Container">
+          {!!searchValue && (
+            <>
+              <h1>Search value {searchValue}</h1>
+            </>
+          )}
+
+          <TextInput searchValue={searchValue} handleChenge={this.handleChenge} />
+        </div>
+
+        {filteredPosts.length > 0 && (
+          <Posts posts={filteredPosts} />
+        )}
+
+        {filteredPosts.length === 0 && (
+          <p>Não existem Posts :(</p>
+        )}
+
 
         <div className="button-container">
-          <Button text="Load More Posts" onClick={this.loadMorePosts} disabled = {noMorePosts}/>
+          {!searchValue && (
+            <Button text="Load More Posts" onClick={this.loadMorePosts} disabled={noMorePosts} />
+          )}
         </div>
       </section>
     );
