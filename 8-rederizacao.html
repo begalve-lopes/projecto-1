@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rocketseat - React.js - Fundamentos</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      function RenderizarList() {
+        const [nomes] = React.useState(["Ana", "Esmael", "Edvaldo"]);
+        const [search, setSearch] = React.useState("");
+        return (
+          <div>
+            <input type="text" placeholder="Buscar" value={search} onChange={(e) => setSearch(e.target.value)}/>
+
+            <ul>
+              {nomes
+                .filter((nome) =>
+                  nome.toLowerCase().includes(search.toLowerCase()),
+                )
+                .map((nome, index) => (
+                  <li key={`${index}-${nome}`}>{nome}</li>
+                ))}
+            </ul>
+          </div>
+        );
+      }
+
+      function App() {
+        return (
+          <main className="p-3">
+            <RenderizarList />
+          </main>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
