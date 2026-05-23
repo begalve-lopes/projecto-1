@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rocketseat - React.js - Fundamentos</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      function Contador() {
+        const [counter, setCounter] = React.useState(0);
+
+        if(counter>20){
+          return <p>Contador maior que 20</p>
+        }
+
+        return (
+          <>
+            <h1>Contador:{counter}</h1>
+            
+            <p>{counter > 10 ? "maior que 10" : "nenor ou igual que 10"}</p>
+            
+            {counter > 15 && <p>Maior que 15</p>}
+            
+            <button onClick={() => setCounter(10)}>Actualizar</button>
+
+            <button
+              className=""
+              onClick={() => setCounter((preValue) => preValue + 1)}
+            >
+              Incrementar
+            </button>
+
+            <button
+              className=""
+              onClick={() => setCounter((preValue) => preValue - 1)}
+            >
+              Decrementarcrementar
+            </button>
+          </>
+        );
+      }
+
+      function App() {
+        return (
+          <main className="p-3">
+            <Contador />
+          </main>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
