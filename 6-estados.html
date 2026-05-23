@@ -20,7 +20,10 @@
         return (
           <>
             <h1>Contador:{counter}</h1>
-            <button className="" onClick={() => setCounter(counter + 1)}>
+            <button
+              className=""
+              onClick={() => setCounter((preValue) => preValue + 1)}
+            >
               Clica
             </button>
           </>
