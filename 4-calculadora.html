@@ -50,7 +50,9 @@
     </style>
   </head>
 
-  <body class="min-h-screen bg-[var(--primary)] text-[var(--text)] font-(var(--font-sans))">
+  <body
+    class="min-h-screen bg-[var(--primary)] text-[var(--text)] font-(var(--font-sans))"
+  >
     <div id="root"></div>
 
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -122,6 +124,40 @@
         );
       }
 
+      const buttons = [
+        [
+          { input: "CE" },
+          { input: "C", className: "flex-1 h-16" },
+          { input: "/", variant: "primary" },
+        ],
+
+        [
+          { input: "7" },
+          { input: "8" },
+          { input: "9" },
+          { input: "*", variant: "primary" },
+        ],
+
+        [
+          { input: "4" },
+          { input: "5" },
+          { input: "6" },
+          { input: "-", variant: "primary" },
+        ],
+
+        [
+          { input: "1" },
+          { input: "2" },
+          { input: "3" },
+          { input: "+", variant: "primary" },
+        ],
+
+        [
+          { input: "0", className: "flex-1 h-16" },
+          { input: "," },
+          { input: "=", variant: "primary" },
+        ],
+      ];
       /* CORREÇÃO: Removidos os caracteres inválidos e as chaves soltas do return */
       function CalculatorDisplay({ operation, result }) {
         return (
@@ -148,48 +184,21 @@
             <CalculatorDisplay operation="1 + 1" result="2" />
 
             <div className="flex flex-col gap-3">
-              <div className="flex gap-3">
-                <Button className="w-16 h-16">CE</Button>
-                <Button className="flex-1 h-16">C</Button>
-                <Button className="w-16 h-16" variant="primary">
-                  /
-                </Button>
-              </div>
-
-              <div className="flex gap-3">
-                <Button className="w-16 h-16">7</Button>
-                <Button className="flex-1 h-16">8</Button>
-                <Button className="flex-1 h-16">9</Button>
-                <Button className="w-16 h-16" variant="primary">
-                  *
-                </Button>
-              </div>
-
-              <div className="flex gap-3">
-                <Button className="w-16 h-16">4</Button>
-                <Button className="flex-1 h-16">5</Button>
-                <Button className="flex-1 h-16">6</Button>
-                <Button className="w-16 h-16" variant="primary">
-                  -
-                </Button>
-              </div>
-
-              <div className="flex gap-3">
-                <Button className="w-16 h-16">1</Button>
-                <Button className="flex-1 h-16">2</Button>
-                <Button className="flex-1 h-16">3</Button>
-                <Button className="w-16 h-16" variant="primary">
-                  +
-                </Button>
-              </div>
-
-              <div className="flex gap-3">
-                <Button className="flex-1 h-16">0</Button>
-                <Button className="w-16 h-16">,</Button>
-                <Button className="w-16 h-16" variant="primary">
-                  =
-                </Button>
-              </div>
+              {buttons.map((row, index) => {
+                return (
+                  <div key={`row-${index}`} className="flex gap-3">
+                    {row.map((button) => (
+                      <Button
+                        key={button.input}
+                        variant={button.variant}
+                        className={button.className || "w-16 h-16"}
+                      >
+                        {button.input}
+                      </Button>
+                    ))}
+                  </div>
+                );
+              })}
             </div>
           </Card>
         );
@@ -206,7 +215,6 @@
               <Text as="li">1 + 1 = 2</Text>
               <Text as="li">1 * 1 = 1</Text>
               <Text as="li">1 - 1 = 0</Text>
-             
             </ul>
           </Card>
         );
