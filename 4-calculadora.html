@@ -162,16 +162,20 @@
       function CalculatorDisplay({ operation, result }) {
         return (
           <div className="flex flex-col gap-1 px-[1.375rem] cursor-default select-none text-right">
-            <Text as="div" variant="muted" className="justify-end w-full">
-              {operation}
+            <Text
+              as="div"
+              variant="muted"
+              className="flex items-center justify-end h-7"
+            >
+              {result && operation}
             </Text>
 
-            <div className="flex items-center justify-between w-full">
+            <div className="flex items-center justify-between h-9">
               <Text variant="muted" className="opacity-50">
                 =
               </Text>
               <Text variant="blast" className="font-bold text-white">
-                {result}
+                {result || operation}
               </Text>
             </div>
           </div>
@@ -179,9 +183,54 @@
       }
 
       function Calculator() {
+        const [operation, setOperation] = React.useState("");
+        const [result, setResult] = React.useState("");
+
+        function handleButtonClick(input) {
+          if (input === "C") {
+            setOperation("");
+            setResult("");
+            return;
+          }
+
+          if (input === "CE") {
+            setOperation(operation.slice(0, -2));
+            return;
+          }
+
+          if (input === "=") {
+            try {
+              const operationResult = eval(operation.replaceAll(",", "."));
+              setResult(operationResult);
+            } catch {
+              setResult("Erro");
+            }
+            return;
+          }
+
+          if (result) {
+            setOperation(
+              isNaN(input)
+                ? `${result}${input === "," ? "" : " "}${input}`
+                : input,
+            );
+            setResult("");
+            return;
+          }
+
+          if (input === "," && !operation.endsWith(",")) {
+            setOperation(`${operation},`);
+            return;
+          }
+
+          setOperation(
+            `${operation}${operation.endsWith(",") ? "" : " "}${input}`,
+          );
+        }
+
         return (
           <Card className="flex flex-col gap-[1.625rem] w-[22.25rem] pt-14 px-8 pb-8">
-            <CalculatorDisplay operation="1 + 1" result="2" />
+            <CalculatorDisplay operation={operation} result={result} />
 
             <div className="flex flex-col gap-3">
               {buttons.map((row, index) => {
@@ -192,6 +241,7 @@
                         key={button.input}
                         variant={button.variant}
                         className={button.className || "w-16 h-16"}
+                        onClick={() => handleButtonClick(button.input)}
                       >
                         {button.input}
                       </Button>
